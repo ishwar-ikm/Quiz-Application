@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.routes.js";
+import quizRoutes from "./routes/quiz.routes.js";
 import connectToDB from "./db/connectToDB.js";
 
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/quiz", quizRoutes);
 
 app.listen(PORT, () => {
     console.log("Listening to port 3000");

@@ -31,8 +31,39 @@ const userSchema = mongoose.Schema({
             ref: "Quiz",
             default: []
         }
-    ]
-}, {timestamps: true});
+    ],
+
+    feedBack: {
+        type: [{
+            quizId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Quiz",
+                required: true
+            },
+            numberOfQuestions: {
+                type: Number,
+                required: true
+            },
+            questionsSolved: {
+                type: Number,
+                required: true
+            },
+            questionsWrong: {
+                type: Number,
+                required: true
+            },
+            questionsLeft: {
+                type: Number,
+                required: true
+            },
+            score: {
+                type: Number,
+                required: true
+            }
+        }],
+        default: []
+    }
+}, { timestamps: true });
 
 const User = mongoose.model("User", userSchema);
 
