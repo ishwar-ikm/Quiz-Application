@@ -55,6 +55,8 @@ function App() {
         <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to={"/"} />} />
         <Route path="/" element={authUser ? <TakeQuiz  setNav={setNav}/> : <Navigate to={"/login"} />}/>
         <Route path="/profile" element={authUser ? <Profile  setNav={setNav}/> : <Navigate to={"/login"} />}/>
+        <Route path="/quiz/:id" element={authUser ? <QuizPage /> : <Navigate to={"/login"} />}/>
+        <Route path="/create" element={authUser ? <CreateQuiz  setNav={setNav}/> : <Navigate to={"/login"} />}/>
         {/* <Route path="/favorites" element={<Favorites setNav={setNav}/>} /> */}
       </Routes>
 
