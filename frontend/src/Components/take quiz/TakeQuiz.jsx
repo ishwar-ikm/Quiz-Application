@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { Search } from 'lucide-react'
 
-import QUIZES from '../../Utils/dummy_quiz';
 import Quiz from './Quiz';
+import { useQuery } from '@tanstack/react-query';
 
-const TakeQuiz = ({setNav}) => {
+const TakeQuiz = ({ setNav }) => {
+
+    const { data: QUIZZES, isLoading } = useQuery({
+        queryKey: ["quizzes"],
+        queryFn: async () => {
+            const res = await fetch("/api/quiz/allQuiz");
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || "Something went wrong");
+            }
+
+            console.log(data);
+            return data;
+        }
+    })
 
     useEffect(() => {
         setNav("take quiz");
@@ -16,18 +31,35 @@ const TakeQuiz = ({setNav}) => {
                 <form className='flex mb-7'>
                     <label className='input shadow-md flex items-center gap-2 w-[85%] m-2'>
                         <Search size={"24"} />
-                        <input type="text" className='text-sm md:text-md' placeholder='Find recipes...' />
+                        <input type="text" className='text-sm md:text-md' placeholder='Find quiz...' />
                     </label>
-                    <input type="submit" className='btn btn-light flex flex-1 m-2 text-lg font-normal shadow-md' value="Search"/>
+                    <input type="submit" className='btn btn-light flex flex-1 m-2 text-lg font-normal shadow-md' value="Search" />
                 </form>
 
-                <h1 className='text-4xl mb-8 text-[#31304D] font-semibold'>Recommended Quizes</h1>
+                <h1 className='text-4xl mb-8 text-[#31304D] font-semibold'>Recommended Quizzes</h1>
 
-                <div>
-                    {QUIZES.map((quiz) => {
-                        return <Quiz quiz={quiz}/>
-                    })}
-                </div>
+                {isLoading && (
+                    <div className="flex w-52 flex-col gap-4">
+                        <div className="skeleton h-32 w-full"></div>
+                        <div className="skeleton h-4 w-28"></div>
+                        <div className="skeleton h-4 w-full"></div>
+                        <div className="skeleton h-4 w-full"></div>
+                    </div>
+                )}
+
+                {!isLoading && QUIZZES?.length === 0 && (
+                    <div>
+                        <p className='text-center text-lg'>No quizzes available</p>
+                    </div>
+                )}
+
+                {!isLoading && QUIZZES?.length > 0 && (
+                    <div>
+                        {QUIZZES.map((quiz) => {
+                            return <Quiz key={quiz._id} quiz={quiz} />
+                        })}
+                    </div>
+                )}
             </div>
         </div>
     )

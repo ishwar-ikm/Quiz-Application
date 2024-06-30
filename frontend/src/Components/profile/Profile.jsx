@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import QuizTaken from './QuizTaken';
+import { useQuery } from '@tanstack/react-query';
 
 const Profile = ({ setNav }) => {
+
+    const {data: authUser} = useQuery({queryKey: ["authUser"]});
 
     useEffect(() => {
         setNav("profile");
@@ -16,25 +19,25 @@ const Profile = ({ setNav }) => {
                         <tbody>
                             <tr>
                                 <td>Username</td>
-                                <td>ikm</td>
+                                <td>{authUser.username}</td>
                             </tr>
                             <tr>
                                 <td>Name</td>
-                                <td>Ishwar Mishra</td>
+                                <td>{authUser.name}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div>
                     <h1 className='text-2xl underline mb-4'>Quizes Taken</h1>
-                    {Array(3).fill(null).map(() => {
-                        return <QuizTaken />
+                    {authUser.quizTaken.map((quiz) => {
+                        return <QuizTaken key={quiz._id} quiz={quiz}/>
                     })}
                 </div>
                 <div>
                     <h1 className='text-2xl underline mb-4'>Quizes Created</h1>
-                    {Array(3).fill(null).map(() => {
-                        return <QuizTaken />
+                    {authUser.quizCreated.map((quiz) => {
+                        return <QuizTaken key={quiz._id} quiz={quiz} created={true}/>
                     })}
                 </div>
             </div>

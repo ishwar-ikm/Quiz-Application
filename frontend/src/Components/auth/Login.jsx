@@ -1,6 +1,9 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import LoadingSpinner from '../skeletons/LoadingSpinner';
 
 const Login = () => {
 
@@ -8,8 +11,46 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
+    const queryClient = useQueryClient();
+
+    const {mutate: login, isPending} = useMutation({
+        mutationFn: async () => {
+            try {
+                const res = await fetch("/api/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({username, password})
+                });
+
+                const data = await res.json();
+
+                if(!res.ok){
+                    throw new Error(data.error || "Something went wrong");
+                }
+
+                return data;
+
+            } catch (error) {
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["authUser"]});
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        }
+    });
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        login();
+    }
+
     return (
-        <div className='h-screen w-screen flex justify-center items-center bg-sky-100'>
+        <div className='h-screen w-screen flex justify-center items-center bg-gradient-to-r from-blue-100 to-stone-50'>
             <div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
                 <div className='w-full p-6 rounded-lg shadow-md bg-white bg-clip-padding'>
                     <h1 className='text-3xl font-semibold text-red-300 text-center'>
@@ -43,8 +84,8 @@ const Login = () => {
                         <a href="/signup" className='text-sm hover:underline hover:text-blue-600 mt-3 inline-block'>Don't have an account?</a>
 
                         <div>
-                            <button type='submit' className='btn btn-block btn-sm mt-2'>
-                                Login
+                            <button type='submit' className='btn btn-block btn-sm mt-2' onClick={handleLogin} disabled={isPending}>
+                            {isPending ? <LoadingSpinner size={"sm"} /> : "Login"}
                             </button>
                         </div>
                     </form>
