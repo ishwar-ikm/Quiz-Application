@@ -39,12 +39,32 @@ const TakeQuiz = ({ setNav }) => {
                 <h1 className='text-4xl mb-8 text-[#31304D] font-semibold'>Recommended Quizzes</h1>
 
                 {isLoading && (
-                    <div className="flex w-52 flex-col gap-4">
-                        <div className="skeleton h-32 w-full"></div>
-                        <div className="skeleton h-4 w-28"></div>
-                        <div className="skeleton h-4 w-full"></div>
-                        <div className="skeleton h-4 w-full"></div>
-                    </div>
+                    <>
+                        <div className="flex w-full flex-col gap-4 mb-7">
+                            <div className="skeleton h-32 w-full"></div>
+                            <div className="skeleton h-4 w-28"></div>
+                            <div className="skeleton h-4 w-full"></div>
+                            <div className="skeleton h-4 w-full"></div>
+                        </div>
+                        <div className="flex w-full flex-col gap-4 mb-7">
+                            <div className="skeleton h-32 w-full"></div>
+                            <div className="skeleton h-4 w-28"></div>
+                            <div className="skeleton h-4 w-full"></div>
+                            <div className="skeleton h-4 w-full"></div>
+                        </div>
+                        <div className="flex w-full flex-col gap-4 mb-7">
+                            <div className="skeleton h-32 w-full"></div>
+                            <div className="skeleton h-4 w-28"></div>
+                            <div className="skeleton h-4 w-full"></div>
+                            <div className="skeleton h-4 w-full"></div>
+                        </div>
+                        <div className="flex w-full flex-col gap-4 mb-7">
+                            <div className="skeleton h-32 w-full"></div>
+                            <div className="skeleton h-4 w-28"></div>
+                            <div className="skeleton h-4 w-full"></div>
+                            <div className="skeleton h-4 w-full"></div>
+                        </div>
+                    </>
                 )}
 
                 {!isLoading && QUIZZES?.length === 0 && (
