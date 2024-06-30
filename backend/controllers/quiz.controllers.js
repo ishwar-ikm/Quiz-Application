@@ -37,6 +37,9 @@ export const createQuiz = async (req, res) => {
 
         await newQuiz.save()
 
+        user.quizCreated.push(newQuiz._id);
+        await user.save();
+
         res.status(201).json(newQuiz);
     } catch (error) {
         console.log("Error in createQuiz controller:", error.message);

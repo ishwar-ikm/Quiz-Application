@@ -94,7 +94,17 @@ export const logout = async (req, res) => {
 
 export const getme = async (req, res) => {
     try {
-        const user = req.user;
+        const userId = req.user._id;
+
+        const user = await User.findById(userId)
+            .populate({
+                path: "quizTaken",
+                select: "-password"
+            })
+            .populate({
+                path: "quizCreated",
+                select: "-password"
+            });
         return res.status(200).json(user);
     } catch (error) {
         console.log("Error in getme controller", error.message);
