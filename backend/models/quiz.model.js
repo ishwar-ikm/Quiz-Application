@@ -40,6 +40,11 @@ const quizSchema = new mongoose.Schema({
         required: true
     },
 
+    time: {
+        type: Number,
+        required: true
+    },
+
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

@@ -7,13 +7,13 @@ export const createQuiz = async (req, res) => {
 
         const user = await User.findById(userId);
 
-        if(!user){
-            return res.status(404).json({error: "User not found"});
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
         }
-        
+
         const quizData = req.body;
 
-        const {questions} = quizData;
+        const { questions } = quizData;
 
         let invalidQuestion = null;
 
@@ -43,7 +43,7 @@ export const createQuiz = async (req, res) => {
         res.status(201).json(newQuiz);
     } catch (error) {
         console.log("Error in createQuiz controller:", error.message);
-        res.status(500).json({error: "Internal server error"});
+        res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -53,29 +53,29 @@ export const deleteQuiz = async (req, res) => {
 
         const user = await User.findById(userId);
 
-        if(!user){
-            return res.status(404).json({error: "User not found"});
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
         }
 
-        const {quizId} = req.params;
-        
+        const { quizId } = req.params;
+
         const quiz = await Quiz.findById(quizId);
 
-        if(!quiz){
-            return res.status(404).json({error: "Quiz not found"});
+        if (!quiz) {
+            return res.status(404).json({ error: "Quiz not found" });
         }
 
-        if(quiz.createdBy.toString() !== userId.toString()){
-            return res.status(401).json({error: "Unauthorised: You are not the owner of this quiz"});
+        if (quiz.createdBy.toString() !== userId.toString()) {
+            return res.status(401).json({ error: "Unauthorised: You are not the owner of this quiz" });
         }
 
         await Quiz.findByIdAndDelete(quizId);
 
-        return res.status(200).json({message: "Quiz deleted successfully"});
+        return res.status(200).json({ message: "Quiz deleted successfully" });
 
     } catch (error) {
         console.log("Error in deleteQuiz controller:", error.message);
-        res.status(500).json({error: "Internal server error"});
+        res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -85,17 +85,22 @@ export const getAllQuiz = async (req, res) => {
 
         const user = await User.findById(userId);
 
-        if(!user){
-            return res.status(404).json({error: "User not found"});
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
         }
-        
-        const quiz = await Quiz.find().select("-questions");
+
+        const quiz = await Quiz.find()
+            .populate({
+                path: "createdBy",
+                select: "username"
+            })
+            .select("-questions");
 
         return res.status(200).json(quiz);
 
     } catch (error) {
         console.log("Error in getAllQuiz controller:", error.message);
-        res.status(500).json({error: "Internal server error"});
+        res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -105,23 +110,23 @@ export const getOneQuiz = async (req, res) => {
 
         const user = await User.findById(userId);
 
-        if(!user){
-            return res.status(404).json({error: "User not found"});
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
         }
 
-        const {quizId} = req.params;
+        const { quizId } = req.params;
 
         const quiz = await Quiz.findById(quizId).select("-questions");
 
-        if(!quiz){
-            return res.status(404).json({error: "Quiz not found"});
+        if (!quiz) {
+            return res.status(404).json({ error: "Quiz not found" });
         }
-        
+
         return res.status(200).json(quiz);
 
     } catch (error) {
         console.log("Error in getAllQuiz controller:", error.message);
-        res.status(500).json({error: "Internal server error"});
+        res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -131,34 +136,34 @@ export const getQuestions = async (req, res) => {
 
         const user = await User.findById(userId);
 
-        if(!user){
-            return res.status(404).json({error: "User not found"});
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
         }
 
-        const {quizId} = req.params;
+        const { quizId } = req.params;
 
         const quiz = await Quiz.findById(quizId).select("-questions.answer");
 
-        if(!quiz){
-            return res.status(404).json({error: "Quiz not found"});
+        if (!quiz) {
+            return res.status(404).json({ error: "Quiz not found" });
         }
 
-        if(quiz.createdBy.toString() === user._id.toString()){
-            return res.status(400).json({error: "You have created this quiz hence you cannot take this quiz"});
+        if (quiz.createdBy.toString() === user._id.toString()) {
+            return res.status(400).json({ error: "You have created this quiz hence you cannot take this quiz" });
         }
 
-        if(user.quizTaken.includes(quizId)){
-            return res.status(400).json({error: "You have already taken this quiz"});
+        if (user.quizTaken.includes(quizId)) {
+            return res.status(400).json({ error: "You have already taken this quiz" });
         }
 
         user.quizTaken.push(quizId);
         await user.save();
-        
+
         return res.status(200).json(quiz);
 
     } catch (error) {
         console.log("Error in getAllQuiz controller:", error.message);
-        res.status(500).json({error: "Internal server error"});
+        res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -189,7 +194,7 @@ export const postFeedback = async (req, res) => {
         let taken = false;
 
         userFeedback.forEach(element => {
-            if(element.quizId.toString() === quizId){
+            if (element.quizId.toString() === quizId) {
                 taken = true;
             }
         })
@@ -248,16 +253,16 @@ export const getFeedback = async (req, res) => {
 
         const user = await User.findById(userId);
 
-        if(!user){
-            return res.status(404).json({error: "User not found"});
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
         }
 
-        const {quizId} = req.params;
+        const { quizId } = req.params;
 
         const quiz = await Quiz.findById(quizId);
 
-        if(!quiz){
-            return res.status(404).json({error: "Quiz not found"});
+        if (!quiz) {
+            return res.status(404).json({ error: "Quiz not found" });
         }
 
         const userFeedbacks = user.feedBack;
@@ -265,19 +270,19 @@ export const getFeedback = async (req, res) => {
         let feedBack = null;
 
         userFeedbacks.forEach(element => {
-            if(quizId.toString() === element.quizId.toString()){
+            if (quizId.toString() === element.quizId.toString()) {
                 feedBack = element;
             }
         });
 
-        if(!feedBack){
-            return res.status(400).json({error: "You have not taken this quiz"});
+        if (!feedBack) {
+            return res.status(400).json({ error: "You have not taken this quiz" });
         }
-        
+
         return res.status(200).json(feedBack);
 
     } catch (error) {
         console.log("Error in getFeedback controller:", error.message);
-        res.status(500).json({error: "Internal server error"});
+        res.status(500).json({ error: "Internal server error" });
     }
 }
