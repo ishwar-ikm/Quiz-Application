@@ -116,7 +116,12 @@ export const getOneQuiz = async (req, res) => {
 
         const { quizId } = req.params;
 
-        const quiz = await Quiz.findById(quizId).select("-questions");
+        const quiz = await Quiz.findById(quizId)
+            .populate({
+                path: "createdBy",
+                select: "username"
+            })
+            .select("-questions");
 
         if (!quiz) {
             return res.status(404).json({ error: "Quiz not found" });
