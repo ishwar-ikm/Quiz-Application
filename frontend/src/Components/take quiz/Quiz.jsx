@@ -15,7 +15,7 @@ const Quiz = ({ quiz }) => {
     <>
       {!isCreatedByMe && (
         <Link to={`/quiz/${quiz._id}`} className={`flex flex-col w-full gap-2 ${bg} border ${border} rounded-md mb-6 p-3 hover:shadow-lg transition duration-300 cursor-pointer`}>
-          <div className='flex justify-between'>
+          <div className='flex flex-col md:flex-row justify-between'>
             <h2 className='text-xl font-semibold text-[#04364A] capitalize'>{quiz.title}</h2>
             <p>Created by <span className='font-bold'>{quiz.createdBy.username}</span></p>
           </div>

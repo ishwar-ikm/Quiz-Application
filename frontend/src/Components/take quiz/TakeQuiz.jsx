@@ -26,7 +26,7 @@ const TakeQuiz = ({ setNav }) => {
     }, []);
 
     return (
-        <div className='bg-[#faf9fe] p-10 lg:px-[100px] flex-1 min-h-screen'>
+        <div className='bg-[#faf9fe] p-3 lg:px-[100px] flex-1 min-h-screen'>
             <div className='w-full mx-auto'>
                 <form className='flex mb-7'>
                     <label className='input shadow-md flex items-center gap-2 w-[85%] m-2'>

@@ -21,7 +21,7 @@ const LargeScreenSideBar = ({ nav, logout, isPending }) => {
                         <TbBulb size={"30"} className={nav === "take quiz" ? 'fill-amber-500' : ''} />
                         <span className='hidden md:block'>Take Quiz</span>
                     </Link>
-                    <Link to={""} className='flex gap-1 hover:bg-slate-200 transition duration-200 rounded-md p-2'>
+                    <Link to={"/create"} className='flex gap-1 hover:bg-slate-200 transition duration-200 rounded-md p-2'>
                         <IoCreate size={"24"} className={nav === "create quiz" ? 'fill-red-500' : ''} />
                         <span className='hidden md:block'>Create Quiz</span>
                     </Link>
@@ -43,11 +43,11 @@ const LargeScreenSideBar = ({ nav, logout, isPending }) => {
 
 const SmallScreenBottomBar = ({ nav, logout, isPending }) => {
     return (
-        <div className='flex justify-center p-2 border-t-2 gap-10 w-full z-10 fixed bottom-0 bg-white sm:hidden'>
+        <div className='flex justify-center p-2 border-t-2 gap-8 w-full z-10 fixed bottom-0 bg-white sm:hidden'>
             <Link to={"/"}  className={nav === "take quiz" ? 'text-yellow-600 flex gap-1' : 'flex gap-1'}>
                 <span>Take Quiz</span>
             </Link>
-            <Link to={"/"}  className={nav === "create quiz" ? 'text-yellow-600 flex gap-1' : 'flex gap-1'}>
+            <Link to={"/create"}  className={nav === "create quiz" ? 'text-yellow-600 flex gap-1' : 'flex gap-1'}>
                 <span>Create Quiz</span>
             </Link>
             <Link to={"/profile"} className={nav === "profile" ? 'text-yellow-600 flex gap-1' : 'flex gap-1'}>

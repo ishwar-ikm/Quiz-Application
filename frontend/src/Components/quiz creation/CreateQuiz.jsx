@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import QuestionInput from './QuestionInput';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const CreateQuiz = ({ setNav }) => {
     const [numQuestions, setNumQuestions] = useState(0);
-    const [questions, setQuestions] = useState([]);
+    const [questions, setQuestions] = useState(null);
     const [quizTitle, setQuizTitle] = useState("");
     const [quizTopic, setQuizTopic] = useState("");
     const [quizDescription, setQuizDescription] = useState("");
@@ -45,6 +48,46 @@ const CreateQuiz = ({ setNav }) => {
         );
     };
 
+    const queryClient = useQueryClient();
+
+    const navigate = useNavigate();
+
+    const {mutate: createQuiz, isPending} = useMutation({
+        mutationFn: async (quizData) => {
+            try {
+                const res = await fetch("/api/quiz/create", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(quizData)
+                });
+                const data = await res.json();
+
+                if(!res.ok){
+                    throw new Error(data.error || "Something went wrong");
+                }
+                
+                return data;
+            } catch (error) {
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["authUser"]});
+            queryClient.invalidateQueries({queryKey: ["quizzes"]});
+            setQuestions(null);
+            setQuizTitle("");
+            setQuizTopic("");
+            setQuizDescription("");
+            setQuizDuration("");
+            navigate("/profile");
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        }
+    })
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const quizData = {
@@ -54,11 +97,11 @@ const CreateQuiz = ({ setNav }) => {
             time: quizDuration,
             questions,
         };
-        console.log('Quiz Data:', quizData);
+        createQuiz(quizData);
     };
 
     return (
-        <div className='bg-[#faf9fe] p-10 lg:px-[100px] flex-1 min-h-screen my-auto'>
+        <div className='bg-[#faf9fe] p-3 md:px-[100px] flex-1 min-h-screen my-auto'>
             <div className='flex flex-col gap-3'>
                 <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
                     <label className="form-control w-full max-w-xs">
@@ -127,7 +170,7 @@ const CreateQuiz = ({ setNav }) => {
                         </div>
                     </div>
 
-                    {questions.map((question, index) => (
+                    {questions?.map((question, index) => (
                         <QuestionInput
                             key={index}
                             index={index}

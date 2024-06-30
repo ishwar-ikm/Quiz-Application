@@ -75,6 +75,13 @@ export const deleteQuiz = async (req, res) => {
 
         await Quiz.findByIdAndDelete(quizId);
 
+        const filtered = user.quizCreated.filter(element => {
+            return element.toString() !== quizId.toString();
+        });
+
+        user.quizCreated = filtered;
+        await user.save();
+
         return res.status(200).json({ message: "Quiz deleted successfully" });
 
     } catch (error) {

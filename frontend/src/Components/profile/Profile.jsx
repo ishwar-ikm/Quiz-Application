@@ -11,7 +11,7 @@ const Profile = ({ setNav }) => {
     }, []);
 
     return (
-        <div className='bg-[#faf9fe] p-10 lg:px-[100px] flex-1 min-h-screen'>
+        <div className='bg-[#faf9fe] p-3 lg:px-[100px] flex-1 min-h-screen'>
             <div className='w-full mx-auto flex flex-col gap-6'>
                 <h1 className='text-center text-slate-500 text-4xl font-bold'>Profile</h1>
                 <div className="overflow-x-auto">
