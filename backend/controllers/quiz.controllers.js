@@ -15,6 +15,10 @@ export const createQuiz = async (req, res) => {
 
         const { questions } = quizData;
 
+        if(!questions){
+            return res.status(400).json({error: "There should be atleast one question for the quiz"});
+        }
+
         let invalidQuestion = null;
 
         questions.forEach(element => {
