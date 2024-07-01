@@ -12,20 +12,21 @@ import Signup from './Components/auth/Signup'
 import { Toaster } from 'react-hot-toast'
 import { useQuery } from '@tanstack/react-query'
 import LoadingSpinner from './Components/skeletons/LoadingSpinner'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 function App() {
   const [nav, setNav] = useState("home");
 
-  const {data:authUser, isLoading} = useQuery({
+  const { data: authUser, isLoading } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
       try {
         const res = await fetch("/api/auth/getme");
         const data = await res.json();
 
-        if(data.error) return null;
+        if (data.error) return null;
 
-        if(!res.ok){
+        if (!res.ok) {
           throw new Error(data.error || "Something went wrong");
         }
 
@@ -38,35 +39,33 @@ function App() {
     retry: false
   });
 
-  if(isLoading){
+  if (isLoading) {
     return (
       <div className='h-screen w-full flex justify-center items-center'>
-        <LoadingSpinner size='lg'/>
+        <LoadingSpinner size='lg' />
       </div>
     )
   }
 
   return (
-    <div className='flex'>
-      {authUser && <Sidebar nav={nav}/>}
-      
-      <Routes>
-        <Route path="/login" element={!authUser ? <Login /> : <Navigate to={"/"} />} />
-        <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to={"/"} />} />
-        <Route path="/" element={authUser ? <TakeQuiz  setNav={setNav}/> : <Navigate to={"/login"} />}/>
-        <Route path="/profile" element={authUser ? <Profile  setNav={setNav}/> : <Navigate to={"/login"} />}/>
-        <Route path="/quiz/:id" element={authUser ? <QuizPage /> : <Navigate to={"/login"} />}/>
-        <Route path="/create" element={authUser ? <CreateQuiz  setNav={setNav}/> : <Navigate to={"/login"} />}/>
-        {/* <Route path="/favorites" element={<Favorites setNav={setNav}/>} /> */}
-      </Routes>
+    <>
+      <div className='flex'>
+        {authUser && <Sidebar nav={nav} />}
 
-      {/* <Questions /> */}
-      {/* <Feedback /> */}
-      {/* <TakeQuiz  setNav={setNav}/> */}
-      {/* <CreateQuiz  setNav={setNav}/> */}
-      {/* <Profile setNav={setNav}/> */}
-      <Toaster />
-    </div>
+        <Routes>
+          <Route path="/login" element={!authUser ? <Login /> : <Navigate to={"/"} />} />
+          <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to={"/"} />} />
+          <Route path="/" element={authUser ? <TakeQuiz setNav={setNav} /> : <Navigate to={"/login"} />} />
+          <Route path="/profile" element={authUser ? <Profile setNav={setNav} /> : <Navigate to={"/login"} />} />
+          <Route path="/quiz/:id" element={authUser ? <QuizPage /> : <Navigate to={"/login"} />} />
+          <Route path="/create" element={authUser ? <CreateQuiz setNav={setNav} /> : <Navigate to={"/login"} />} />
+          <Route path="/questions/:quizId" element={authUser ? <Questions /> : <Navigate to={"/login"} />} />
+          <Route path="/feedback/:quizId" element={authUser ? <Feedback /> : <Navigate to={"/login"} />} />
+        </Routes>
+        <Toaster />
+      </div>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </>
   )
 }
 

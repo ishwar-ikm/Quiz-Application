@@ -28,7 +28,12 @@ const QuizPage = () => {
                 toast.error(error.message);
             }
         },
-    })
+    });
+
+    const {data: authUser} = useQuery({queryKey: ["authUser"]});
+
+    const isQuizTaken = authUser.quizTaken.some(quiz => quiz._id === id);
+    console.log(isQuizTaken);
 
     return (
         <>
@@ -53,7 +58,11 @@ const QuizPage = () => {
                             <a className="btn btn-accent" onClick={() => navigate(-1)}>
                                 <FaArrowLeftLong /> Go back
                             </a>
-                            <a className="btn btn-secondary">Take Quiz</a>
+
+                            {isQuizTaken ?
+                             <a href={`/feedback/${Quiz._id}`} className="btn btn-secondary">See feedback</a> : 
+                             <a href={`/questions/${Quiz._id}`} className="btn btn-secondary">Take Quiz</a>
+                            }
                         </div>
                     </div>
                 </div>

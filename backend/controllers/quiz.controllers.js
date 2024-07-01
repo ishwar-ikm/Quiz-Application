@@ -172,8 +172,6 @@ export const getQuestions = async (req, res) => {
             return res.status(400).json({ error: "You have already taken this quiz" });
         }
 
-        user.quizTaken.push(quizId);
-        await user.save();
 
         return res.status(200).json(quiz);
 
@@ -253,6 +251,8 @@ export const postFeedback = async (req, res) => {
         };
 
         user.feedBack.push(feedback);
+        user.quizTaken.push(quizId);
+        
         await user.save();
 
         return res.status(200).json(feedback);
