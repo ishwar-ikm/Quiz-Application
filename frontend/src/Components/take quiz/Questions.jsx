@@ -79,9 +79,9 @@ const Questions = () => {
             setTimeLeft((prevTime) => {
                 const remaining = prevTime - 1;
 
-                if (remaining <= 0) {
+                if (remaining < 0) {
                     clearInterval(timer);
-                    handleSubmit();
+                    postAnswers();
                 }
 
                 return remaining;
@@ -142,7 +142,9 @@ const Questions = () => {
     };
 
     const handleSubmit = () => {
-        postAnswers();
+        if (timeLeft > 0) {
+            postAnswers(); 
+        }
     };
 
     return (

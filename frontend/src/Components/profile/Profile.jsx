@@ -30,12 +30,14 @@ const Profile = ({ setNav }) => {
                 </div>
                 <div>
                     <h1 className='text-2xl underline mb-4'>Quizes Taken</h1>
+                    {authUser.quizTaken.length === 0 && <p>You have not taken any quiz yet</p>}
                     {authUser.quizTaken.map((quiz) => {
                         return <QuizTaken key={quiz._id} quiz={quiz}/>
                     })}
                 </div>
                 <div>
                     <h1 className='text-2xl underline mb-4'>Quizes Created</h1>
+                    {authUser.quizCreated.length === 0 && <p>You have not created any quiz yet</p>}
                     {authUser.quizCreated.map((quiz) => {
                         return <QuizTaken key={quiz._id} quiz={quiz} created={true}/>
                     })}
