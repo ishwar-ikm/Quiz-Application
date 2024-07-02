@@ -306,3 +306,14 @@ export const getFeedback = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+
+export const searchQuizzesByName = async (req, res) => {
+    const { name } = req.query;
+    try {
+        const regex = new RegExp(name, 'i');
+        const quizzes = await Quiz.find({ title: { $regex: regex } }).select("-questions");
+        res.json(quizzes);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
