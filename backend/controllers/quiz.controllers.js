@@ -295,7 +295,7 @@ export const getFeedback = async (req, res) => {
             return res.status(400).json({ error: "You have not taken this quiz" });
         }
 
-        return res.status(200).json(feedBack);
+        return res.status(200).json({feedBack, questions: quiz.questions});
 
     } catch (error) {
         console.log("Error in getFeedback controller:", error.message);

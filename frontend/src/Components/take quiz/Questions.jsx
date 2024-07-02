@@ -94,12 +94,7 @@ const Questions = () => {
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
-            event.preventDefault();
-            const confirmationMessage = 'Quiz will be auto submitted if you leave this page, do you still wish to leave?';
-
-            event.returnValue = confirmationMessage;
             handleSubmit();
-            return confirmationMessage;
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
@@ -108,6 +103,27 @@ const Questions = () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, []);
+
+    useEffect(() => {
+        const handlePopState = (event) => {
+            event.preventDefault();
+            const confirmationMessage = 'Quiz will be auto submitted if you leave this page, do you still wish to leave?';
+            
+            if (window.confirm(confirmationMessage)) {
+                handleSubmit();
+                navigate(-1); // Navigate back if the user confirms
+            } else {
+                window.history.pushState(null, document.title, window.location.href); // Prevent back navigation
+            }
+        };
+
+        window.history.pushState(null, document.title, window.location.href);
+        window.addEventListener('popstate', handlePopState);    
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [navigate]);
 
     // Format time as minutes and seconds
     const formatTime = (seconds) => {
@@ -170,6 +186,7 @@ const Questions = () => {
                         <FaRegClock />
                         <h1>{formatTime(timeLeft)}</h1>
                     </div>
+                    <p className='text-red-800 font-bold mt-10'>Waring: Do not refresh or navigate back this page, test will be auto submitted</p>
                     <div className='w-full mx-auto flex flex-col gap-6 mt-7'>
                         <h1 className='text-2xl font-normal'>Questions</h1>
 

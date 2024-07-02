@@ -65,35 +65,44 @@ const Feedback = () => {
                     <div className='w-full mx-auto flex flex-col gap-6 justify-center items-center'>
                         <h1 className='text-green-500 text-5xl font-mono underline'>Feedback</h1>
                         <div className={`${bg} border ${border} flex flex-col gap-9 px-2 md:px-20 py-6 rounded-md w-full`}>
-                            <h1 className='text-4xl text-center text-emerald-600'>{getRemarks(feedback?.score)}</h1>
-                            <h1 className='text-6xl text-center text-slate-500'>Your Score - {feedback?.score}%</h1>
+                            <h1 className='text-4xl text-center text-emerald-600'>{getRemarks(feedback.feedBack?.score)}</h1>
+                            <h1 className='text-6xl text-center text-slate-500'>Your Score - {feedback.feedBack?.score}%</h1>
                             <div className='text-xl'>
                                 <div className='flex justify-between'>
                                     <p>Total number of questions</p>
-                                    <p>{feedback?.numberOfQuestions}</p>
+                                    <p>{feedback.feedBack?.numberOfQuestions}</p>
                                 </div>
                                 <div className='flex justify-between'>
                                     <p>Number of correct answers</p>
-                                    <p>{feedback?.questionsSolved}</p>
+                                    <p>{feedback.feedBack?.questionsSolved}</p>
                                 </div>
                                 <div className='flex justify-between'>
                                     <p>Number of unattempted questions</p>
-                                    <p>{feedback?.questionsLeft}</p>
+                                    <p>{feedback.feedBack?.questionsLeft}</p>
                                 </div>
                                 <div className='flex justify-between'>
                                     <p>Number of wrong answers</p>
-                                    <p>{feedback?.questionsWrong}</p>
+                                    <p>{feedback.feedBack?.questionsWrong}</p>
                                 </div>
                                 <div className='flex justify-between'>
                                     <p>Score</p>
-                                    <p>{feedback?.score}</p>
+                                    <p>{feedback.feedBack?.score}%</p>
                                 </div>
                             </div>
                         </div>
 
+                        <h1 className='text-green-500 text-5xl font-mono underline mt-10'>Answers</h1>
+                        {feedback.questions?.map((question, index) => {
+                            return (<div className={`flex flex-col w-full gap-5 ${bg} border ${border} rounded-md mb-6 p-5`}>
+                                <h3 className='text-xl'><span className='font-bold'>Q{index + 1}</span> {question.question}</h3>
+                                <p className='text-xl'>Answer: <span className='font-bold text-lg'>{question.answer}</span> </p>
+                            </div>)
+                        })}
                         <a href='/' className="btn btn-accent">Take more quizzes</a>
                     </div>
                 </div>
+
+
             }
         </>
     )
