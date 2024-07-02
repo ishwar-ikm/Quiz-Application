@@ -93,7 +93,7 @@ const Feedback = () => {
 
                         <h1 className='text-green-500 text-5xl font-mono underline mt-10'>Answers</h1>
                         {feedback.questions?.map((question, index) => {
-                            return (<div className={`flex flex-col w-full gap-5 ${bg} border ${border} rounded-md mb-6 p-5`}>
+                            return (<div key={question._id} className={`flex flex-col w-full gap-5 ${bg} border ${border} rounded-md mb-6 p-5`}>
                                 <h3 className='text-xl'><span className='font-bold'>Q{index + 1}</span> {question.question}</h3>
                                 <p className='text-xl'>Answer: <span className='font-bold text-lg'>{question.answer}</span> </p>
                             </div>)
@@ -101,8 +101,6 @@ const Feedback = () => {
                         <a href='/' className="btn btn-accent">Take more quizzes</a>
                     </div>
                 </div>
-
-
             }
         </>
     )

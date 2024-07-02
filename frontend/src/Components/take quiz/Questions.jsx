@@ -143,7 +143,6 @@ const Questions = () => {
 
     const handleSubmit = () => {
         postAnswers();
-        navigate(`/feedback/${quizId}`);
     };
 
     return (

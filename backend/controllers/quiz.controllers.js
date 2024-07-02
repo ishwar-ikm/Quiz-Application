@@ -107,7 +107,11 @@ export const getAllQuiz = async (req, res) => {
             })
             .select("-questions");
 
-        return res.status(200).json(quiz);
+        const response = quiz.filter(q => {
+            return !(user.quizCreated.includes(q._id));
+        })
+
+        return res.status(200).json(response);
 
     } catch (error) {
         console.log("Error in getAllQuiz controller:", error.message);
