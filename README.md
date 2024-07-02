@@ -90,6 +90,6 @@ To run the Quiz Application locally, follow these steps:
 
 - **Register/Login**: Create an account or login with existing credentials.
 - **Create Quiz**: Navigate to the dashboard to create a new quiz.
-- **`Note`**: You can not take quiz if you have created it.
+- **`Note`**: You can not take a quiz if you not have created it.
 - **Take Quiz**: Browse available quizzes, select one, and submit your answers.
 - **View Results**: See your quiz performance and feedback.
