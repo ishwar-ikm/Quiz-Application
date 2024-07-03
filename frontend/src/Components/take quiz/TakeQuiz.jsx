@@ -7,11 +7,12 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 const TakeQuiz = ({ setNav }) => {
 
     const [searchInput, setSearchInput] = useState("");
+    const [QUIZZES, setQuizzes] = useState([]);
 
-    const { data: QUIZZES, isLoading, isRefetching, refetch } = useQuery({
+    const { data, isLoading, isRefetching, refetch } = useQuery({
         queryKey: ["quizzes"],
         queryFn: async () => {
-            const res = await fetch(`/api/quiz/search?name=${searchInput}`);
+            const res = await fetch(`/api/quiz/allQuiz`);
             const data = await res.json();
 
             if (!res.ok) {
@@ -20,6 +21,9 @@ const TakeQuiz = ({ setNav }) => {
 
             console.log(data);
             return data;
+        },
+        onSuccess: (data) => {
+            setQuizzes(data);
         }
     })
 
@@ -29,7 +33,13 @@ const TakeQuiz = ({ setNav }) => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        refetch();
+        const regex = new RegExp(searchInput, 'i');
+        setQuizzes(prev => {
+            const newArr = data.filter(q => {
+                return q.title.match(regex);
+            });
+            return newArr;
+        })
     }
 
     return (
