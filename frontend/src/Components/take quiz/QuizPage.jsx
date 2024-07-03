@@ -10,7 +10,7 @@ const QuizPage = () => {
 
     const navigate = useNavigate();
 
-    const { data: Quiz, isLoading } = useQuery({
+    const { data: Quiz, isLoading, isRefetching } = useQuery({
         queryKey: ["quiz"],
         queryFn: async () => {
             try {
@@ -37,13 +37,13 @@ const QuizPage = () => {
 
     return (
         <>
-            {isLoading && (
+            {(isLoading || isRefetching) && (
                 <div className='h-screen w-full flex justify-center items-center'>
                     <LoadingSpinner size='lg' />
                 </div>
             )}
 
-            {!isLoading && (
+            {!isLoading && !isRefetching && (
                 <div className='bg-[#faf9fe] p-10 lg:px-[100px] flex-1 min-h-screen my-auto'>
                     <div className='w-full mx-auto flex flex-col gap-6'>
                         <h1 className='text-5xl font-bold capitalize text-[#04364A]'>{Quiz?.title}</h1>

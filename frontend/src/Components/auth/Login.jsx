@@ -13,7 +13,7 @@ const Login = () => {
 
     const queryClient = useQueryClient();
 
-    const {mutate: login, isPending} = useMutation({
+    const {mutate: login, isPending, isLoading} = useMutation({
         mutationFn: async () => {
             try {
                 const res = await fetch("/api/auth/login", {
@@ -84,8 +84,8 @@ const Login = () => {
                         <a href="/signup" className='text-sm hover:underline hover:text-blue-600 mt-3 inline-block'>Don't have an account?</a>
 
                         <div>
-                            <button type='submit' className='btn btn-block btn-sm mt-2' onClick={handleLogin} disabled={isPending}>
-                            {isPending ? <LoadingSpinner size={"sm"} /> : "Login"}
+                            <button type='submit' className='btn btn-block btn-sm mt-2' onClick={handleLogin} >
+                            {(isPending || isLoading) ? <LoadingSpinner /> : "Login"}
                             </button>
                         </div>
                     </form>

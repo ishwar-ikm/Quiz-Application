@@ -41,6 +41,13 @@ const QuizCreatedInfo = () => {
         <div className='flex flex-col flex-1 p-28'>
           <div className="flex w-full flex-col gap-4 mb-7">
             <div className="skeleton h-32 w-full"></div>
+            <div className="skeleton h-4 w-28"></div>
+            <div className="skeleton h-4 w-full"></div>
+            <div className="skeleton h-4 w-full"></div>
+          </div>
+          
+          <div className="flex w-full flex-col gap-4 mb-7">
+            <div className="skeleton h-32 w-full"></div>
             <div className='grid grid-row-4 md:grid-rows-2 md:grid-flow-col gap-3'>
               <div className="skeleton h-4"></div>
               <div className="skeleton h-4"></div>

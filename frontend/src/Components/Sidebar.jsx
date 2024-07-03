@@ -8,7 +8,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import LoadingSpinner from './skeletons/LoadingSpinner';
 
-const LargeScreenSideBar = ({ nav, logout, isPending }) => {
+const LargeScreenSideBar = ({ nav, logout, isPending, isLoading }) => {
     return (
         <div className='p-3 md:p-10 border-r-2 w-24 md:w-64 min-h-screen hidden sm:block'>
             <div className='flex flex-col gap-20 sticky top-10 left-0'>
@@ -41,7 +41,7 @@ const LargeScreenSideBar = ({ nav, logout, isPending }) => {
     )
 }
 
-const SmallScreenBottomBar = ({ nav, logout, isPending }) => {
+const SmallScreenBottomBar = ({ nav, logout, isPending, isLoading }) => {
     return (
         <div className='flex justify-center p-2 border-t-2 gap-8 w-full z-10 fixed bottom-0 bg-white sm:hidden'>
             <Link to={"/"}  className={nav === "take quiz" ? 'text-yellow-600 flex gap-1' : 'flex gap-1'}>
@@ -54,7 +54,7 @@ const SmallScreenBottomBar = ({ nav, logout, isPending }) => {
                 <span>Profile</span>
             </Link>
             <div className='flex gap-1 cursor-pointer' onClick={logout}>
-                {isPending ? <LoadingSpinner /> : <span>Logout</span>}
+                {(isPending || isLoading) ? <LoadingSpinner /> : <span>Logout</span>}
             </div>
         </div>
     )
@@ -64,7 +64,7 @@ const Sidebar = ({ nav }) => {
 
     const queryClient = useQueryClient();
 
-    const { mutate: logout, isPending } = useMutation({
+    const { mutate: logout, isPending, isLoading } = useMutation({
         mutationFn: async () => {
             try {
                 const res = await fetch("/api/auth/logout", {
@@ -91,8 +91,8 @@ const Sidebar = ({ nav }) => {
 
     return (
         <>
-            <LargeScreenSideBar nav={nav} logout={logout} isPending={isPending} />
-            <SmallScreenBottomBar nav={nav} logout={logout} isPending={isPending} />
+            <LargeScreenSideBar nav={nav} logout={logout} isPending={isPending} isLoading={isLoading} />
+            <SmallScreenBottomBar nav={nav} logout={logout} isPending={isPending} isLoading={isLoading} />
         </>
     )
 }

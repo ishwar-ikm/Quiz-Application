@@ -3,6 +3,7 @@ import QuestionInput from './QuestionInput';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import LoadingSpinner from '../skeletons/LoadingSpinner';
 
 const CreateQuiz = ({ setNav }) => {
     const [numQuestions, setNumQuestions] = useState(0);
@@ -52,7 +53,7 @@ const CreateQuiz = ({ setNav }) => {
 
     const navigate = useNavigate();
 
-    const {mutate: createQuiz, isPending} = useMutation({
+    const {mutate: createQuiz, isPending, isLoading} = useMutation({
         mutationFn: async (quizData) => {
             try {
                 const res = await fetch("/api/quiz/create", {
@@ -184,7 +185,9 @@ const CreateQuiz = ({ setNav }) => {
                     ))}
 
                     <div className="flex justify-start">
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <button type="submit" className="btn btn-primary">
+                        {(isPending || isLoading) ? <LoadingSpinner /> : "Submit"}
+                        </button>
                     </div>
                 </form>
             </div>

@@ -15,7 +15,7 @@ const Signup = () => {
 
     const queryClient = useQueryClient();
 
-    const { mutate: signup, isPending } = useMutation({
+    const { mutate: signup, isPending, isLoading } = useMutation({
         mutationFn: async () => {
             try {
                 if(confirmPassword !== password) {
@@ -110,7 +110,7 @@ const Signup = () => {
 
                         <div>
                             <button type='submit' className='btn btn-block btn-sm mt-2' disabled={isPending} onClick={handleSign}>
-                                {isPending ? <LoadingSpinner size={"sm"} /> : "Signup"}
+                                {(isPending || isLoading) ? <LoadingSpinner size={"sm"} /> : "Signup"}
                             </button>
                         </div>
                     </form>
