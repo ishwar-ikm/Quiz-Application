@@ -13,6 +13,7 @@ import { Toaster } from 'react-hot-toast'
 import { useQuery } from '@tanstack/react-query'
 import LoadingSpinner from './Components/skeletons/LoadingSpinner'
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import QuizCreatedInfo from './Components/profile/QuizCreatedInfo'
 
 function App() {
   const [nav, setNav] = useState("home");
@@ -53,6 +54,7 @@ function App() {
         {authUser && <Sidebar nav={nav} />}
 
         <Routes>
+          
           <Route path="/login" element={!authUser ? <Login /> : <Navigate to={"/"} />} />
           <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to={"/"} />} />
           <Route path="/" element={authUser ? <TakeQuiz setNav={setNav} /> : <Navigate to={"/login"} />} />
@@ -61,8 +63,10 @@ function App() {
           <Route path="/create" element={authUser ? <CreateQuiz setNav={setNav} /> : <Navigate to={"/login"} />} />
           <Route path="/questions/:quizId" element={authUser ? <Questions /> : <Navigate to={"/login"} />} />
           <Route path="/feedback/:quizId" element={authUser ? <Feedback /> : <Navigate to={"/login"} />} />
-        </Routes>
-        <Toaster />
+          <Route path="/createdQuestion/:quizId" element={authUser ? <QuizCreatedInfo />: <Navigate to={"/login"} />} />
+          </Routes>
+          <Toaster /> 
+        
       </div>
       <ReactQueryDevtools initialIsOpen={false} />
     </>

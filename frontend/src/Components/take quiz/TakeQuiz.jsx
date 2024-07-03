@@ -87,13 +87,13 @@ const TakeQuiz = ({ setNav }) => {
                     </>
                 )}
 
-                {(!isLoading || !isRefetching) && QUIZZES?.length === 0 && (
+                {!isLoading && !isRefetching && QUIZZES?.length === 0 && (
                     <div>
                         <p className='text-center text-lg'>No quizzes available</p>
                     </div>
                 )}
 
-                {(!isLoading || !isRefetching) && QUIZZES?.length > 0 && (
+                {!isLoading && !isRefetching && QUIZZES?.length > 0 && (
                     <div>
                         {QUIZZES.map((quiz) => {
                             return <Quiz key={quiz._id} quiz={quiz} />
